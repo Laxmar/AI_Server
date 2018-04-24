@@ -2,7 +2,7 @@ import * as WebSocket from "ws";
 import {MoveDirections} from "./enums";
 import GameMap from "./GameMap";
 import {Point} from "./Point";
-import {MoveRequest} from "../communication/Requests";
+import {MoveRequest} from "../communication/serverRequests";
 
 export default class Player {
     public readonly id: number;
@@ -26,6 +26,7 @@ export default class Player {
         this.name = name;
         this.socket = socket;
         this.movesLeft = maxMovesPerRound;
+        this.maxMovesPerRound = maxMovesPerRound;
         this.fieldOfView = fieldOfView;
         this.setStartPosition();
         this.basePosition = new Point(this.x, this.y);
@@ -42,6 +43,10 @@ export default class Player {
 
     getMovesLeft(): number {
         return this.movesLeft;
+    }
+
+    setToMovesLeftToZero(): void {
+        this.movesLeft = 0;
     }
 
     resetMovePoints(): void {

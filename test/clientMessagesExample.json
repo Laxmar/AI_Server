@@ -1,0 +1,11 @@
+{
+  "type":"Connect",
+  "name":"Player One"
+}
+,
+
+{
+  "type":"Move",
+  "playerId":0,
+  "move":"RIGHT"
+}

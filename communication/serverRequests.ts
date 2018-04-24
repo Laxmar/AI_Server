@@ -1,8 +1,12 @@
 import Player from "../game/Player";
 import {Point} from "../game/Point";
 
+export const enum ServerRequestsTypes  {
+    MoveRequest = "MoveRequest"
+}
+
 export class MoveRequest {
-    readonly type: string = "MoveRequest";
+    readonly type: ServerRequestsTypes = ServerRequestsTypes.MoveRequest
     map: number[][];
     players: Player[];
     flag: Point;

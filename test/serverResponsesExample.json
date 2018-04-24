@@ -1,0 +1,43 @@
+
+{
+  "type":"MoveRequest",
+  "map":[
+    [
+      1,
+      1,
+      1,
+      1
+    ],
+    [ 1,
+      1,
+      1,
+      1
+    ]
+  ],
+  "players":[
+    {
+      "id":0,
+      "name":"Player One",
+      "maxMovesPerRound:": 5,
+      "movesLeft":5,
+      "fieldOfView":5,
+      "x":0,
+      "y":0,
+      "basePosition":{
+        "x":0,
+        "y":0
+      },
+      "hasFlag":false,
+      "isAlive":true
+    }
+  ],
+  "flag":{
+    "x":50,
+    "y":50
+  }
+},
+
+{
+  "type" : "ResponseOK",
+  "msg":' "OK"
+}

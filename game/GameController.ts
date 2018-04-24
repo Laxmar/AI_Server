@@ -17,7 +17,7 @@ export class GameController {
     private readonly maxPlayers: number = GameConfiguration.maxPlayers;
 
     constructor() {
-        this.gameMap = new GameMap(100,100);
+        this.gameMap = new GameMap(5,5);
         this.flagPosition = new Point(50, 50);
         this.players = [];
     }
@@ -35,9 +35,12 @@ export class GameController {
     isValidMoveForCurrentPlayer(direction: MoveDirections): boolean {
         const nextPosition: Point = this.currentPlayer.calculateNextPosition(direction);
         const isPointOnTheMap = nextPosition.x >= 0 && nextPosition.x < this.gameMap.width && nextPosition.y < this.gameMap.height && nextPosition.y >= 0;
+        if(!isPointOnTheMap) {
+            return false;
+        }
         const moveCost: number = this.calculateMoveCost(nextPosition, this.currentPlayer.hasFlag);
 
-        return moveCost <= this.currentPlayer.getMovesLeft() && isPointOnTheMap;
+        return moveCost <= this.currentPlayer.getMovesLeft();
     }
 
     moveCurrentPlayer(direction: MoveDirections): void {
@@ -61,6 +64,8 @@ export class GameController {
     }
 
     nextMove(): void {
+        console.log("nextMove");
+
         if(this.currentPlayer.getMovesLeft() > 0) {
             this.currentPlayer.sendMoveRequest(this.players, this.gameMap.map, this.flagPosition);
         } else {
@@ -69,7 +74,7 @@ export class GameController {
     }
 
     private changePlayer(): void {
-        const nextIndex = (this.players.length + 1) % this.players.length;
+        const nextIndex = this.players.length == 1 ? 0 : (this.players.length + 1) % this.players.length;
         this.currentPlayer = this.players[nextIndex];
         this.currentPlayer.resetMovePoints();
         this.nextMove();

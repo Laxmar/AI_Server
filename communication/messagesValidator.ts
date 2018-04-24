@@ -1,9 +1,9 @@
-import {Message, MESSAGE_TYPES} from "./Messages";
+import {IncomingMessage, IncomingMessagesTypes} from "./incomingMessages";
 import {isNumber} from "util";
 import {MoveDirectionsArray} from "../game/enums";
 
 export function isValidMessage (msg: string): boolean {
-    let msgJSON: Message;
+    let msgJSON: IncomingMessage;
 
     try {
         msgJSON = JSON.parse(msg);
@@ -14,9 +14,9 @@ export function isValidMessage (msg: string): boolean {
 }
 
 export function isValidConnectMessage(msg: any): boolean {
-    return msg.type == MESSAGE_TYPES.Connect && msg.name;
+    return msg.type == IncomingMessagesTypes.Connect && msg.name;
 }
 
 export function isValidMoveMessage(msg: any): boolean {
-    return msg.type == MESSAGE_TYPES.Move && isNumber(msg.playerId) && MoveDirectionsArray.includes(msg.move);
+    return msg.type == IncomingMessagesTypes.Move && isNumber(msg.playerId) && MoveDirectionsArray.includes(msg.move);
 }

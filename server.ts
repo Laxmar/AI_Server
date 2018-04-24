@@ -2,10 +2,11 @@ import * as WebSocket from "ws";
 
 import {ErrorCodes} from "./communication/ErrorCodes";
 import {GameController} from "./game/GameController";
-import {ConnectMessage, Message, MESSAGE_TYPES, MoveMessage} from "./communication/Messages";
+import {ConnectMessage, IncomingMessage, IncomingMessagesTypes, MoveMessage} from "./communication/incomingMessages";
 import {GameMode, GameStatus} from "./game/enums";
 import {isValidConnectMessage, isValidMessage, isValidMoveMessage} from "./communication/messagesValidator";
 import {GameConfiguration} from "./GameConfiguration";
+import {ErrorResponse, ResponseOK} from "./communication/serverResponses";
 
 const port: number = 8000;
 
@@ -13,12 +14,11 @@ const server = new WebSocket.Server({port: port} , () => {
     console.log(`Server listening on ${port}`);
 });
 
-
 const gameController: GameController = new GameController();
 
 server.on('connection', function connection(ws: WebSocket) {
 
-    console.log("There are clients connected: ", server.clients.size);
+    console.log(`There are ${server.clients.size} clients connected`);
 
     ws.on('message', function incoming(message: string) {
         console.log('received: ', message);
@@ -28,10 +28,10 @@ server.on('connection', function connection(ws: WebSocket) {
             return;
         }
 
-        const msg: Message = JSON.parse(message);
+        const msg: IncomingMessage = JSON.parse(message);
 
         switch (msg.type) {
-            case MESSAGE_TYPES.Connect:
+            case IncomingMessagesTypes.Connect:
                 if(!isValidConnectMessage(msg)) {
                     server.emit("gameError", ErrorCodes.invalidConnectMessage, ws);
                     return;
@@ -42,28 +42,36 @@ server.on('connection', function connection(ws: WebSocket) {
                     return;
                 }
 
-                ws.send(JSON.stringify("OK"));
+                ws.send(JSON.stringify(new ResponseOK()));
                 gameController.addPlayer((<ConnectMessage>msg).name, ws);
 
                 break;
 
-            case MESSAGE_TYPES.Move:
+            case IncomingMessagesTypes.Move:
                 if(!isValidMoveMessage(msg)) {
                     server.emit("gameError", ErrorCodes.invalidMoveMessage, ws);
                     return;
                 }
 
                 const moveMsg: MoveMessage = <MoveMessage>msg;
+
                 if (gameController.currentPlayer.id !== moveMsg.playerId) {
                     server.emit("gameError", ErrorCodes.invalidPlayerId, ws);
                     return
                 }
-                if (gameController.isValidMoveForCurrentPlayer(moveMsg.move)) {
+                if (!gameController.isValidMoveForCurrentPlayer(moveMsg.move)) {
                     server.emit("gameError", ErrorCodes.invalidMove, ws);
+                    gameController.currentPlayer.setToMovesLeftToZero();
+                    gameController.nextMove();
                     return;
                 }
 
                 gameController.moveCurrentPlayer(moveMsg.move);
+
+                console.log("Player moved");
+                console.log(gameController.currentPlayer.getPlayerDataForSend());
+
+                ws.send(JSON.stringify(new ResponseOK()));
 
                 if(gameController.status == GameStatus.FINISHED ) {
                     server.clients.forEach(function each(client) {
@@ -77,7 +85,7 @@ server.on('connection', function connection(ws: WebSocket) {
                     return;
                 }
                 if(GameConfiguration.gameMode == GameMode.DELAY) {
-                    setTimeout(gameController.nextMove, GameConfiguration.delay);
+                    setTimeout( gameController.nextMove.bind(gameController), GameConfiguration.delay);
                     return
                 }
                 if(GameConfiguration.gameMode == GameMode.AUTO) {
@@ -85,7 +93,7 @@ server.on('connection', function connection(ws: WebSocket) {
                 }
                 break;
 
-            case MESSAGE_TYPES.NextMove:
+            case IncomingMessagesTypes.NextMove:
                 gameController.nextMove();
                 break;
 
@@ -107,7 +115,7 @@ server.on('connection', function connection(ws: WebSocket) {
 
 server.on("gameError",(errorCode, ws) => {
     console.log(errorCode);
-    ws.send(errorCode)
+    ws.send(JSON.stringify(new ErrorResponse(errorCode)));
 
 });
 
