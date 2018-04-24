@@ -1,0 +1,7 @@
+version: '3'
+services:
+  server:
+    container_name: "ai_server"
+    build: .
+    ports:
+     - "8000:8000"
