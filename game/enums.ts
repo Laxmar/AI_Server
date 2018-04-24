@@ -14,3 +14,9 @@ export const enum MoveDirections {
 }
 
 export const MoveDirectionsArray: MoveDirections[] = [MoveDirections.LEFT, MoveDirections.RIGHT, MoveDirections.UP, MoveDirections.DOWN, MoveDirections.NO_MOVE];
+
+export const enum GameMode {
+    AUTO = "AUTO",
+    DELAY = "DELAY",
+    MANUAL = "MANUAL"
+}

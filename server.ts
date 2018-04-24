@@ -3,8 +3,9 @@ import * as WebSocket from "ws";
 import {ErrorCodes} from "./communication/ErrorCodes";
 import {GameController} from "./game/GameController";
 import {ConnectMessage, Message, MESSAGE_TYPES, MoveMessage} from "./communication/Messages";
-import {GameStatus} from "./game/enums";
+import {GameMode, GameStatus} from "./game/enums";
 import {isValidConnectMessage, isValidMessage, isValidMoveMessage} from "./communication/messagesValidator";
+import {GameConfiguration} from "./GameConfiguration";
 
 const port: number = 8000;
 
@@ -51,29 +52,40 @@ server.on('connection', function connection(ws: WebSocket) {
                     server.emit("gameError", ErrorCodes.invalidMoveMessage, ws);
                     return;
                 }
-                if (gameController.currentPlayer.id !== (<MoveMessage>msg).playerId) {
+
+                const moveMsg: MoveMessage = <MoveMessage>msg;
+                if (gameController.currentPlayer.id !== moveMsg.playerId) {
                     server.emit("gameError", ErrorCodes.invalidPlayerId, ws);
                     return
                 }
-
-                // check if player can move
-
-                gameController.moveCurrentPlayer((<MoveMessage>msg).move);
-
-                if(gameController.status == GameStatus.FINISHED ) {
-                    // broadcast
+                if (gameController.isValidMoveForCurrentPlayer(moveMsg.move)) {
+                    server.emit("gameError", ErrorCodes.invalidMove, ws);
+                    return;
                 }
 
-                // tryb 1. sleep
-                // tryb 2. return and wait for  msg nextMove
-                // tryb 3. just go with next req
+                gameController.moveCurrentPlayer(moveMsg.move);
 
-                gameController.nextMove();
+                if(gameController.status == GameStatus.FINISHED ) {
+                    server.clients.forEach(function each(client) {
+                        if (client.readyState === WebSocket.OPEN) {
+                            client.send("GameOver");
+                        }
+                    })
+                }
 
+                if(GameConfiguration.gameMode == GameMode.MANUAL) {
+                    return;
+                }
+                if(GameConfiguration.gameMode == GameMode.DELAY) {
+                    setTimeout(gameController.nextMove, GameConfiguration.delay);
+                    return
+                }
+                if(GameConfiguration.gameMode == GameMode.AUTO) {
+                    gameController.nextMove();
+                }
                 break;
 
             case MESSAGE_TYPES.NextMove:
-                console.log("Next Move");
                 gameController.nextMove();
                 break;
 

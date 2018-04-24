@@ -18,7 +18,5 @@ export default class GameMap {
             }
         }
     }
-}
 
-// send whole gameMap
-// -1 when bot cannot see field
+}

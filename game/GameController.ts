@@ -4,7 +4,7 @@ import GameMap from "./GameMap";
 import Player from "./Player";
 import {GameStatus, MoveDirections} from "./enums";
 import {Point} from "./Point";
-import {GameConfiguration} from "./GameConfiguration";
+import {GameConfiguration} from "../GameConfiguration";
 
 
 export class GameController {
@@ -24,7 +24,7 @@ export class GameController {
 
     addPlayer(name: string, socket: WebSocket): void {
         const playerId = this.players.length;
-        const player = new Player(playerId, name, socket, GameConfiguration.maxMovesPerRound);
+        const player = new Player(playerId, name, socket, GameConfiguration.maxMovesPerRound, GameConfiguration.fieldOfView);
 
         this.players.push(player);
         if(this.players.length == this.maxPlayers) {
@@ -32,10 +32,17 @@ export class GameController {
         }
     }
 
-    moveCurrentPlayer(direction: MoveDirections) {
+    isValidMoveForCurrentPlayer(direction: MoveDirections): boolean {
         const nextPosition: Point = this.currentPlayer.calculateNextPosition(direction);
-        let moveCost: number = this.gameMap.map[nextPosition.x][nextPosition.y];
-        moveCost = this.currentPlayer.hasFlag ? moveCost + GameConfiguration.carryingFlagMoveCost : moveCost;
+        const isPointOnTheMap = nextPosition.x >= 0 && nextPosition.x < this.gameMap.width && nextPosition.y < this.gameMap.height && nextPosition.y >= 0;
+        const moveCost: number = this.calculateMoveCost(nextPosition, this.currentPlayer.hasFlag);
+
+        return moveCost <= this.currentPlayer.getMovesLeft() && isPointOnTheMap;
+    }
+
+    moveCurrentPlayer(direction: MoveDirections): void {
+        const nextPosition: Point = this.currentPlayer.calculateNextPosition(direction);
+        const moveCost: number = this.calculateMoveCost(nextPosition, this.currentPlayer.hasFlag);
 
         this.currentPlayer.move(nextPosition, moveCost);
 
@@ -72,5 +79,10 @@ export class GameController {
         this.status = GameStatus.IN_PROGRESS;
         this.currentPlayer = this.players[0];
         this.currentPlayer.sendMoveRequest(this.players, this.gameMap.map, this.flagPosition);
+    }
+
+    private calculateMoveCost(position: Point, hasFlag: boolean): number {
+        let moveCost: number = this.gameMap.map[position.x][position.y];
+        return hasFlag ? moveCost + GameConfiguration.carryingFlagMoveCost : moveCost;
     }
 }

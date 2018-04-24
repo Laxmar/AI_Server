@@ -10,21 +10,27 @@ export default class Player {
 
     private readonly name: string;
     private readonly maxMovesPerRound: number;
+    private readonly basePosition: Point;
+    private readonly fieldOfView: number;
+
     private movesLeft: number;
     private x: number;
     private y: number;
     private isAlive: boolean;
 
+    // This field isn't sent to client
     private socket: WebSocket;
 
-    constructor(id: number, name: string, socket: WebSocket, maxMovesPerRound: number) {
+    constructor(id: number, name: string, socket: WebSocket, maxMovesPerRound: number, fieldOfView: number) {
         this.id = id;
         this.name = name;
-        this.hasFlag = false;
-        this.movesLeft = maxMovesPerRound;
         this.socket = socket;
-        this.isAlive = true;
+        this.movesLeft = maxMovesPerRound;
+        this.fieldOfView = fieldOfView;
         this.setStartPosition();
+        this.basePosition = new Point(this.x, this.y);
+        this.hasFlag = false;
+        this.isAlive = true;
     }
 
     getPlayerDataForSend(): Player {
@@ -44,25 +50,17 @@ export default class Player {
 
     sendMoveRequest(players: Player[], map: number[][], flag: Point): void {
 
-        // TODO calulate visible map
+        // TODO calculate visible map
+        // send whole gameMap
+        // -1 when bot cannot see field
         const visibleMap = map;
 
-        // TODO check is player visible
+        // TODO show only visible players
 
         const playersData: Player[] = players.map(p => p.getPlayerDataForSend());
         const moveRequest: MoveRequest = new MoveRequest(visibleMap, playersData, flag);
 
         this.socket.send(JSON.stringify(moveRequest));
-    }
-
-    canMove(direction: MoveDirections, map: GameMap): boolean {
-        // TODO
-
-        // check gameMap boundaries
-
-        // check if has enough movesPoint
-
-        return true;
     }
 
     calculateNextPosition(direction: MoveDirections): Point {
