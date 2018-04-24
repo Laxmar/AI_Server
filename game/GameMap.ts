@@ -10,6 +10,7 @@ export default class GameMap {
         this.generateMap();
     }
 
+    // TODO generateMap with perlin noise alg
     private generateMap() {
         for(let i = 0; i<this.height; i++) {
             this.map.push([]);

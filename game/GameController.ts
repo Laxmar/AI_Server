@@ -17,8 +17,9 @@ export class GameController {
     private readonly maxPlayers: number = GameConfiguration.maxPlayers;
 
     constructor() {
-        this.gameMap = new GameMap(5,5);
-        this.flagPosition = new Point(50, 50);
+        this.gameMap = new GameMap(GameConfiguration.mapWidth,GameConfiguration.mapHeight);
+        // TODO add placing a flag
+        this.flagPosition = new Point(5, 5);
         this.players = [];
     }
 
@@ -64,8 +65,6 @@ export class GameController {
     }
 
     nextMove(): void {
-        console.log("nextMove");
-
         if(this.currentPlayer.getMovesLeft() > 0) {
             this.currentPlayer.sendMoveRequest(this.players, this.gameMap.map, this.flagPosition);
         } else {
