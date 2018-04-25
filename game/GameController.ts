@@ -60,8 +60,10 @@ export class GameController {
 
         // TODO check if player kill player
 
-        // TODO check if game is finished
-
+        // TODO add testing mode - maxPlayers = 1; makes sense just for testing purpose
+        if(this.isGameOver() && GameConfiguration.maxPlayers > 1) {
+            this.status = GameStatus.FINISHED;
+        }
     }
 
     nextMove(): void {
@@ -73,7 +75,8 @@ export class GameController {
     }
 
     private changePlayer(): void {
-        const nextIndex = this.players.length == 1 ? 0 : (this.players.length + 1) % this.players.length;
+        const nextIndex = this.players.length == 1 ? 0 : (this.currentPlayer.id + 1) % this.players.length;
+        console.log("NextPlayer index: " + nextIndex);
         this.currentPlayer = this.players[nextIndex];
         this.currentPlayer.resetMovePoints();
         this.nextMove();
@@ -89,4 +92,10 @@ export class GameController {
         let moveCost: number = this.gameMap.map[position.x][position.y];
         return hasFlag ? moveCost + GameConfiguration.carryingFlagMoveCost : moveCost;
     }
+
+    private isGameOver(): boolean {
+        const isOnePlayerAlive = this.players.filter( p => p.isAlive).length == 1;
+        return (this.currentPlayer.isPlayerInBase() && this.currentPlayer.hasFlag) || isOnePlayerAlive;
+    }
+
 }

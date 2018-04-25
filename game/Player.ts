@@ -7,6 +7,7 @@ import {MoveRequest} from "../communication/serverRequests";
 export default class Player {
     public readonly id: number;
     public hasFlag: boolean;
+    public isAlive: boolean;
 
     private readonly name: string;
     private readonly maxMovesPerRound: number;
@@ -16,7 +17,6 @@ export default class Player {
     private movesLeft: number;
     private x: number;
     private y: number;
-    private isAlive: boolean;
 
     // This field isn't sent to client
     private socket: WebSocket;
@@ -51,6 +51,10 @@ export default class Player {
 
     resetMovePoints(): void {
         this.movesLeft = this.maxMovesPerRound;
+    }
+
+    isPlayerInBase(): boolean {
+        return this.x == this.basePosition.x && this.y == this.basePosition.y;
     }
 
     sendMoveRequest(players: Player[], map: number[][], flag: Point): void {

@@ -1,22 +1,34 @@
 import {IncomingMessage} from "./incomingMessages";
 import {ErrorCodes} from "./ErrorCodes";
 
-enum ResponseTypes  {
+export enum ServerResponseTypes  {
     ResponseOK = "ResponseOK",
-    Error = "Error"
+    Error = "Error",
+    Connected = "Connected"
 }
 
 export class ResponseOK {
-    type: ResponseTypes = ResponseTypes.ResponseOK;
+    type: ServerResponseTypes = ServerResponseTypes.ResponseOK;
     msg: string = "OK";
 }
 
 export class ErrorResponse {
-    type: ResponseTypes = ResponseTypes.Error;
+    type: ServerResponseTypes = ServerResponseTypes.Error;
     msg: ErrorCodes;
 
     constructor(errCode: ErrorCodes) {
         this.msg = errCode;
     }
 }
+
+export class ConnectResponse {
+    type: ServerResponseTypes = ServerResponseTypes.Connected;
+    msg: string = "Connected";
+    playerId: number;
+
+    constructor(id: number) {
+        this.playerId = id;
+    }
+}
+
 

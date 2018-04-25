@@ -6,7 +6,7 @@ import {ConnectMessage, IncomingMessage, IncomingMessagesTypes, MoveMessage} fro
 import {GameMode, GameStatus} from "./game/enums";
 import {isValidConnectMessage, isValidMessage, isValidMoveMessage} from "./communication/messagesValidator";
 import {GameConfiguration} from "./GameConfiguration";
-import {ErrorResponse, ResponseOK} from "./communication/serverResponses";
+import {ConnectResponse, ErrorResponse, ResponseOK} from "./communication/serverResponses";
 
 const port: number = 8000;
 
@@ -42,7 +42,10 @@ server.on('connection', function connection(ws: WebSocket) {
                     return;
                 }
 
-                ws.send(JSON.stringify(new ResponseOK()));
+                // Ugly hack here should send ConnectResponse after addPlayer but it will break in case testing with 1 player
+                // TODO add testMode and fix this hack
+                const nextPlayerId = gameController.players.length;
+                ws.send(JSON.stringify(new ConnectResponse(nextPlayerId)));
                 gameController.addPlayer((<ConnectMessage>msg).name, ws);
 
                 break;
@@ -76,7 +79,8 @@ server.on('connection', function connection(ws: WebSocket) {
                 if(gameController.status == GameStatus.FINISHED ) {
                     server.clients.forEach(function each(client) {
                         if (client.readyState === WebSocket.OPEN) {
-                            client.send("GameOver");
+                            client.send(JSON.stringify({type: "GameOver"}));
+                            return;
                         }
                     })
                 }

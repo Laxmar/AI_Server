@@ -40,4 +40,10 @@
 {
   "type" : "ResponseOK",
   "msg":' "OK"
+},
+
+{
+  type: 'Connected',
+  msg: 'Connected',
+  playerId: 1
 }
