@@ -1,7 +1,13 @@
 version: '3'
 services:
-  server:
-    container_name: "ai_server"
-    build: .
+  server_backend:
+    container_name: "ai_server_backend"
+    build: backend
     ports:
      - "8000:8000"
+
+  server_frontend:
+    container_name: "ai_server_frontend"
+    build: frontend
+    ports:
+     - "4200:4200"
