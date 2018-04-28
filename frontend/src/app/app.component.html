@@ -4,5 +4,10 @@
   </h1>
 </div>
 
-<canvas #myCanvas width="500" height="500"></canvas>
+<!--<canvas #myCanvas width="500" height="500"></canvas>-->
 
+<div>
+  {{ msg | json }}
+</div>
+
+<button (click)="send()">SEND</button>
