@@ -1,8 +1,8 @@
 import * as WebSocket from "ws";
-import {ConnectMessage, IncomingMessagesTypes, IncomingMessage, MoveMessage} from "../communication/incomingMessages";
-import {MoveDirections, MoveDirectionsArray} from "../game/enums";
-import {ServerRequestsTypes} from "../communication/serverRequests";
-import {ConnectResponse, ServerResponseTypes} from "../communication/serverResponses";
+import {ConnectMessage, IncomingMessagesTypes, IncomingMessage, MoveMessage} from "../src/communication/incomingMessages";
+import {MoveDirections, MoveDirectionsArray} from "../src/game/enums";
+import {ServerRequestsTypes} from "../src/communication/serverRequests";
+import {ConnectResponse, ServerResponseTypes} from "../src/communication/serverResponses";
 
 const url = "ws://localhost:8000";
 

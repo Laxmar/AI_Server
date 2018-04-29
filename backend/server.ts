@@ -1,13 +1,13 @@
 import * as WebSocket from "ws";
 
-import {ErrorCodes} from "./communication/ErrorCodes";
-import {GameController} from "./game/GameController";
-import {ConnectMessage, IncomingMessage, IncomingMessagesTypes, MoveMessage} from "./communication/incomingMessages";
-import {GameMode, GameStatus} from "./game/enums";
-import {isValidConnectMessage, isValidMessage, isValidMoveMessage} from "./communication/messagesValidator";
+import {ErrorCodes} from "./src/communication/ErrorCodes";
+import {GameController} from "./src/game/GameController";
+import {ConnectMessage, IncomingMessage, IncomingMessagesTypes, MoveMessage} from "./src/communication/incomingMessages";
+import {GameMode, GameStatus} from "./src/game/enums";
+import {isValidConnectMessage, isValidMessage, isValidMoveMessage} from "./src/communication/messagesValidator";
 import {GameConfiguration} from "./GameConfiguration";
-import {ConnectResponse, ErrorResponse, ResponseOK} from "./communication/serverResponses";
-import {FrontendCommunication} from "./FrontendCommunication";
+import {ConnectResponse, ErrorResponse, ResponseOK} from "./src/communication/serverResponses";
+import {FrontendCommunication} from "./src/FrontendCommunication";
 
 const port: number = 8000;
 
@@ -132,5 +132,5 @@ server.on("gameError",(errorCode, ws) => {
 });
 
 server.on("error", (err) => {
-    console.log(err);
+console.log(err);
 });

@@ -4,7 +4,7 @@ import GameMap from "./GameMap";
 import Player from "./Player";
 import {GameStatus, MoveDirections} from "./enums";
 import {Point} from "./Point";
-import {GameConfiguration} from "../GameConfiguration";
+import {GameConfiguration} from "../../GameConfiguration";
 
 
 export class GameController {
@@ -76,7 +76,6 @@ export class GameController {
 
     private changePlayer(): void {
         const nextIndex = this.players.length == 1 ? 0 : (this.currentPlayer.id + 1) % this.players.length;
-        console.log("NextPlayer index: " + nextIndex);
         this.currentPlayer = this.players[nextIndex];
         this.currentPlayer.resetMovePoints();
         this.nextMove();

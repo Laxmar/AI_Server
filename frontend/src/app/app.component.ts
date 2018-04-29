@@ -1,7 +1,7 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {SocketService} from "./services/socket.service";
 import {Dto} from "../../../model";
-import {IncomingMessage} from "../../../backend/communication/incomingMessages";
+import {IncomingMessage} from "../../../backend/src/communication/incomingMessages";
 
 @Component({
     selector: 'app-root',

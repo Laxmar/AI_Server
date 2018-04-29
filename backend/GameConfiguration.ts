@@ -1,4 +1,4 @@
-import {GameMode} from "./game/enums";
+import {GameMode} from "./src/game/enums";
 
 export class GameConfiguration {
     static readonly maxMovesPerRound: number = 5;
