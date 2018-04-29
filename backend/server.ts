@@ -7,6 +7,7 @@ import {GameMode, GameStatus} from "./game/enums";
 import {isValidConnectMessage, isValidMessage, isValidMoveMessage} from "./communication/messagesValidator";
 import {GameConfiguration} from "./GameConfiguration";
 import {ConnectResponse, ErrorResponse, ResponseOK} from "./communication/serverResponses";
+import {FrontendCommunication} from "./FrontendCommunication";
 
 const port: number = 8000;
 
@@ -15,6 +16,7 @@ const server = new WebSocket.Server({port: port} , () => {
 });
 
 const gameController: GameController = new GameController();
+const frontCommunication: FrontendCommunication = new FrontendCommunication();
 
 server.on('connection', function connection(ws: WebSocket) {
 
@@ -34,6 +36,11 @@ server.on('connection', function connection(ws: WebSocket) {
             case IncomingMessagesTypes.Connect:
                 if(!isValidConnectMessage(msg)) {
                     server.emit("gameError", ErrorCodes.invalidConnectMessage, ws);
+                    return;
+                }
+
+                if(frontCommunication.isFrontClient(<ConnectMessage>msg)) {
+                    frontCommunication.addClient(ws);
                     return;
                 }
 
@@ -72,7 +79,8 @@ server.on('connection', function connection(ws: WebSocket) {
                 gameController.moveCurrentPlayer(moveMsg.move);
 
                 console.log("Player moved");
-                console.log(gameController.currentPlayer.getPlayerDataForSend());
+
+                frontCommunication.send(JSON.stringify(gameController.currentPlayer.getPlayerDataForSend()));
 
                 ws.send(JSON.stringify(new ResponseOK()));
 

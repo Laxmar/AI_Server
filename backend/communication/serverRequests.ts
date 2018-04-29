@@ -6,7 +6,7 @@ export const enum ServerRequestsTypes  {
 }
 
 export class MoveRequest {
-    readonly type: ServerRequestsTypes = ServerRequestsTypes.MoveRequest
+    readonly type: ServerRequestsTypes = ServerRequestsTypes.MoveRequest;
     map: number[][];
     players: Player[];
     flag: Point;

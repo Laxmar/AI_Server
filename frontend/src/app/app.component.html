@@ -1,13 +1,32 @@
-<div style="text-align:center">
-  <h1>
-    AI Server
-  </h1>
+<div class="container-fluid bg-light">
+  <div class="row">
+    <div class="col-12">
+      <h1 class="h1">
+        AI Server
+      </h1>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+       <pre class="border">
+          {{ msg | json }}
+      </pre>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 btn-group">
+      <button (click)="connect()" class="btn btn-success btn-lg" >connect</button>
+    </div>
+  </div>
+
+
 </div>
+
+
 
 <!--<canvas #myCanvas width="500" height="500"></canvas>-->
 
-<div>
-  {{ msg | json }}
-</div>
 
-<button (click)="send()">SEND</button>
+

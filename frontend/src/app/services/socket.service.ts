@@ -1,18 +1,19 @@
 import { Injectable } from '@angular/core';
 import {Observable} from "rxjs/Observable";
-// import * as WebSocket from "ws";
 
 @Injectable()
 export class SocketService {
 
     private socket: WebSocket;
     private serverUrl: string = "ws://localhost:8000";
+    private readonly frontClientName = "FrontClient";
 
     constructor() {
     }
 
     public initSocket(): void {
         this.socket = new WebSocket(this.serverUrl);
+
     }
 
     public onMessage(): Observable<any> {
@@ -23,8 +24,16 @@ export class SocketService {
         });
     }
 
-    public send() {
-        this.socket.send("cos");
+    public connect() {
+        if(this.socket.readyState !== WebSocket.OPEN) {
+            this.initSocket();
+        }
+        const connectMsg =
+            {
+                type: "Connect",
+                name: this.frontClientName
+            };
+        this.socket.send(JSON.stringify(connectMsg));
     }
 
 }

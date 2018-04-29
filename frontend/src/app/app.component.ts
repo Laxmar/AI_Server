@@ -1,5 +1,7 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {SocketService} from "./services/socket.service";
+import {Dto} from "../../../model";
+import {IncomingMessage} from "../../../backend/communication/incomingMessages";
 
 @Component({
     selector: 'app-root',
@@ -33,7 +35,7 @@ export class AppComponent implements OnInit {
             });
     }
 
-    send() {
-        this.socketService.send();
+    connect() {
+        this.socketService.connect();
     }
 }
