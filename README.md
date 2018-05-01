@@ -1,19 +1,38 @@
 
 How to run:
-1. Using docker
 
-    Just install docker and use 'docker-compose up' command to run server
+1. Using Docker
 
-2. Locally (not recommended)
+    Just install docker and use `docker-compose up` command to run server
 
-    So try: install node > 8, typescipt, ts-node, npm install, npm start
-    Should works, but require validation and time to create detail instruction
+2. Without Docker
+
+    **Backend**  
+    1. NodeJS 8 or higher required  
+    2. typescipt 2.8.X should be installed globally  `npm i -g typescript` 
+    3. ts-node should be isntalled globally `npm i -g ts-node`
+    4. `npm install` in backend folder
+
+    Start:  `npm start`
+
+     **Fronted**
+     1. angular cli (1.7.4)  `npm i -g @angular/cli`
+     2. `npm install` in frontend folder
+
+    Start: `npm start`
 
 
-How to communicate with server:
+Backend listens on ws://localhost:8000
 
-All messages send to sever should have type. For detail information check communication folder.
-In folder test can be found example massages.
+Frontend runs on http://localhost:4200
+
+
+
+
+**Communication**
+
+All messages send to sever should have type. For detail information check backend/src/communication folder.
+In folder backend/test can be found example massages.
 
 1. Send ConnectMessage -> server responds ConnectResponse with playerId. 
 Client should save this id, because it's used to create MoveMessage.

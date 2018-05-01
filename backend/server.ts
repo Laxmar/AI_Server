@@ -12,7 +12,7 @@ import {FrontendCommunication} from "./src/FrontendCommunication";
 const port: number = 8000;
 
 const server = new WebSocket.Server({port: port} , () => {
-    console.log(`Server listening on ${port}`);
+    console.log(`Server listening on ws://localhost:${port}`);
 });
 
 const gameController: GameController = new GameController();
@@ -41,6 +41,7 @@ server.on('connection', function connection(ws: WebSocket) {
 
                 if(frontCommunication.isFrontClient(<ConnectMessage>msg)) {
                     frontCommunication.addClient(ws);
+                    ws.send( JSON.stringify(new ResponseOK()));
                     return;
                 }
 

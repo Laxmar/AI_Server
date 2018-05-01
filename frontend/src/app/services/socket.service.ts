@@ -5,7 +5,9 @@ import {Observable} from "rxjs/Observable";
 export class SocketService {
 
     private socket: WebSocket;
-    private serverUrl: string = "ws://localhost:8000";
+
+    // TODO move constants to config
+    private readonly serverUrl: string = "ws://localhost:8000";
     private readonly frontClientName = "FrontClient";
 
     constructor() {
