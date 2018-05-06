@@ -3,6 +3,7 @@ import {MoveDirections} from "./enums";
 import GameMap from "./GameMap";
 import {Point} from "./Point";
 import {MoveRequest} from "../communication/serverRequests";
+import FieldOfView from "./FieldOfView";
 
 export default class Player {
     public readonly id: number;
@@ -12,32 +13,35 @@ export default class Player {
     private readonly name: string;
     private readonly maxMovesPerRound: number;
     private readonly basePosition: Point;
-    private readonly fieldOfView: number;
+    private readonly viewRange: number;
 
     private movesLeft: number;
     private x: number;
     private y: number;
 
-    // This field isn't sent to client
+    // These fields aren't sent to client
     private socket: WebSocket;
+    private map: GameMap;
 
-    constructor(id: number, name: string, socket: WebSocket, maxMovesPerRound: number, fieldOfView: number) {
+    constructor(id: number, name: string, socket: WebSocket, maxMovesPerRound: number, viewRange: number, map: GameMap) {
         this.id = id;
         this.name = name;
         this.socket = socket;
         this.movesLeft = maxMovesPerRound;
         this.maxMovesPerRound = maxMovesPerRound;
-        this.fieldOfView = fieldOfView;
+        this.viewRange = viewRange;
         this.setStartPosition();
         this.basePosition = new Point(this.x, this.y);
         this.hasFlag = false;
         this.isAlive = true;
+        this.map = map;
     }
 
-    getPlayerDataForSend(): Player {
-        let playerWithoutSocket = Object.assign({}, this);
-        delete playerWithoutSocket.socket;
-        return playerWithoutSocket;
+    getPlayerDto() {
+        let playerDto = Object.assign({}, this);
+        delete playerDto.socket;
+        delete playerDto.map;
+        return playerDto;
     }
 
 
@@ -57,16 +61,14 @@ export default class Player {
         return this.x == this.basePosition.x && this.y == this.basePosition.y;
     }
 
-    sendMoveRequest(players: Player[], map: number[][], flag: Point): void {
+    sendMoveRequest(players: Player[], flag: Point): void {
+        const playerPosition = new Point(this.x, this.y);
+        const fieldOfView: FieldOfView = new FieldOfView(playerPosition, this.viewRange);
 
-        // TODO calculate visible map
-        // send whole gameMap
-        // -1 when bot cannot see field
-        const visibleMap = map;
+        const visibleMap = this.map.calculateVisibleMap(fieldOfView);
+        const visiblePlayer = players.filter( p => fieldOfView.isPointVisible( new Point(p.x, p.y) ));
 
-        // TODO show only visible players
-
-        const playersData: Player[] = players.map(p => p.getPlayerDataForSend());
+        const playersData: Player[] = visiblePlayer.map(p => p.getPlayerDto());
         const moveRequest: MoveRequest = new MoveRequest(visibleMap, playersData, flag);
 
         this.socket.send(JSON.stringify(moveRequest));

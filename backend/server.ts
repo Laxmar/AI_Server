@@ -81,7 +81,7 @@ server.on('connection', function connection(ws: WebSocket) {
 
                 console.log("Player moved");
 
-                frontCommunication.send(JSON.stringify(gameController.currentPlayer.getPlayerDataForSend()));
+                frontCommunication.send(JSON.stringify(gameController.currentPlayer.getPlayerDto()));
 
                 ws.send(JSON.stringify(new ResponseOK()));
 

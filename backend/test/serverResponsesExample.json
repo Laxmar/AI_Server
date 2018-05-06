@@ -20,7 +20,7 @@
       "name":"Player One",
       "maxMovesPerRound:": 5,
       "movesLeft":5,
-      "fieldOfView":5,
+      "viewRange":5,
       "x":0,
       "y":0,
       "basePosition":{

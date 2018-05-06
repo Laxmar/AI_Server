@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "ts-node server.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "ts-mocha test/unit/*spec.ts"
   },
   "author": "PK",
   "license": "ISC",
@@ -15,9 +15,12 @@
     "ws": "^5.1.1"
   },
   "devDependencies": {
-    "ts-node": "^6.0.0",
+    "@types/expect": "^1.20.3",
     "@types/express": "^4.11.1",
+    "@types/mocha": "^5.2.0",
     "@types/socket.io": "^1.4.33",
-    "@types/ws": "^4.0.2"
+    "@types/ws": "^4.0.2",
+    "ts-mocha": "^1.2.0",
+    "ts-node": "^6.0.0"
   }
 }

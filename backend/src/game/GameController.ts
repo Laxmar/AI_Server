@@ -25,7 +25,7 @@ export class GameController {
 
     addPlayer(name: string, socket: WebSocket): void {
         const playerId = this.players.length;
-        const player = new Player(playerId, name, socket, GameConfiguration.maxMovesPerRound, GameConfiguration.fieldOfView);
+        const player = new Player(playerId, name, socket, GameConfiguration.maxMovesPerRound, GameConfiguration.viewRange, this.gameMap);
 
         this.players.push(player);
         if(this.players.length == this.maxPlayers) {
@@ -68,7 +68,7 @@ export class GameController {
 
     nextMove(): void {
         if(this.currentPlayer.getMovesLeft() > 0) {
-            this.currentPlayer.sendMoveRequest(this.players, this.gameMap.map, this.flagPosition);
+            this.currentPlayer.sendMoveRequest(this.players, this.flagPosition);
         } else {
             this.changePlayer();
         }
@@ -84,7 +84,7 @@ export class GameController {
     private startGame(): void {
         this.status = GameStatus.IN_PROGRESS;
         this.currentPlayer = this.players[0];
-        this.currentPlayer.sendMoveRequest(this.players, this.gameMap.map, this.flagPosition);
+        this.currentPlayer.sendMoveRequest(this.players, this.flagPosition);
     }
 
     private calculateMoveCost(position: Point, hasFlag: boolean): number {
