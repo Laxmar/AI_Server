@@ -1,7 +1,7 @@
 import FieldOfView from "../../src/game/FieldOfView";
 import {Point} from "../../src/game/Point";
 import {expect} from "chai";
-
+import * as mocha from "mocha";
 
 describe("FieldOfView", () => {
 

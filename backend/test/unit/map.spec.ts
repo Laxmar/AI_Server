@@ -1,4 +1,5 @@
 import { assert, expect } from "chai";
+import * as mocha from "mocha";
 
 import GameMap from "../../src/game/GameMap";
 import {Point} from "../../src/game/Point";
