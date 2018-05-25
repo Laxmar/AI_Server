@@ -23,14 +23,15 @@ export default class Player {
     private socket: WebSocket;
     private map: GameMap;
 
-    constructor(id: number, name: string, socket: WebSocket, maxMovesPerRound: number, viewRange: number, map: GameMap) {
+    constructor(id: number, name: string, socket: WebSocket, maxMovesPerRound: number, viewRange: number, startingPosition: Point, map: GameMap) {
         this.id = id;
         this.name = name;
         this.socket = socket;
         this.movesLeft = maxMovesPerRound;
         this.maxMovesPerRound = maxMovesPerRound;
         this.viewRange = viewRange;
-        this.setStartPosition();
+        this.x = startingPosition.x;
+        this.y = startingPosition.y;
         this.basePosition = new Point(this.x, this.y);
         this.hasFlag = false;
         this.isAlive = true;
@@ -108,11 +109,4 @@ export default class Player {
         this.y = nextPosition.y;
         this.movesLeft -= moveCost;
     }
-
-    // TODO implement depends of player id
-    private setStartPosition() {
-        this.x = 0;
-        this.y = 0;
-    }
-
 }

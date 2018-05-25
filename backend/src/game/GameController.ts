@@ -18,14 +18,14 @@ export class GameController {
 
     constructor() {
         this.gameMap = new GameMap(GameConfiguration.mapWidth,GameConfiguration.mapHeight);
-        // TODO add placing a flag
-        this.flagPosition = new Point(5, 5);
+        this.flagPosition = this.gameMap.calculateMapCenter();
         this.players = [];
     }
 
     addPlayer(name: string, socket: WebSocket): void {
         const playerId = this.players.length;
-        const player = new Player(playerId, name, socket, GameConfiguration.maxMovesPerRound, GameConfiguration.viewRange, this.gameMap);
+        const playerStartingPosition: Point = this.calculatePlayerStartingPosition(playerId);
+        const player = new Player(playerId, name, socket, GameConfiguration.maxMovesPerRound, GameConfiguration.viewRange,  playerStartingPosition, this.gameMap);
 
         this.players.push(player);
         if(this.players.length == this.maxPlayers) {
@@ -97,4 +97,20 @@ export class GameController {
         return (this.currentPlayer.isPlayerInBase() && this.currentPlayer.hasFlag) || isOnePlayerAlive;
     }
 
+    // TODO handle more players
+    private calculatePlayerStartingPosition(playerNumber: number): Point {
+        let x = 0;
+        let y = 0;
+
+        if(playerNumber == 0) {
+            x = this.gameMap.width / 2;
+            y = 0;
+            return new Point(x, y);
+        }
+        if(playerNumber == 1) {
+            x = this.gameMap.width / 2;
+            y = this.gameMap.height-1;
+        }
+        return new Point(x,y);
+    }
 }

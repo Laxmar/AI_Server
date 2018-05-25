@@ -13,6 +13,10 @@ export default class GameMap {
         this.generateMap();
     }
 
+    public calculateMapCenter(): Point {
+        return new Point(this.width/2, this.height/2);
+    }
+
     public calculateVisibleMap(fieldOfView: FieldOfView): number[][] {
         let visibleMap: number[][] = Object.assign([], this.map);
 
