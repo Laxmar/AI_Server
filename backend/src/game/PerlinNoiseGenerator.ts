@@ -73,7 +73,7 @@ export class PerlinNoiseGenerator {
 
         let perlinNoise: number[][] = [];
         for(let i=0; i<this.width; i++) {
-            let row:number[] = Array.from({length: this.height}, (v, k) => 0);
+            let row:number[] = Array.from({length: this.height}, () => 0);
             perlinNoise.push(row);
         }
 
