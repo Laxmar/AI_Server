@@ -18,6 +18,7 @@
   "include": [
     "GameConfiguration.ts",
     "server.ts",
-    "src/**/*"
+    "src/**/*",
+    "test/**/*"
   ]
 }
