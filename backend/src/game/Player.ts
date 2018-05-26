@@ -4,6 +4,7 @@ import GameMap from "./GameMap";
 import {Point} from "./Point";
 import {MoveRequest} from "../communication/serverRequests";
 import FieldOfView from "./FieldOfView";
+import {PlayerDto} from "../common/PlayerDto";
 
 export default class Player {
     public readonly id: number;
@@ -38,11 +39,19 @@ export default class Player {
         this.map = map;
     }
 
-    getPlayerDto() {
-        let playerDto = Object.assign({}, this);
-        delete playerDto.socket;
-        delete playerDto.map;
-        return playerDto;
+    getPlayerDto(): PlayerDto {
+        return {
+            id: this.id,
+            hasFlag: this.hasFlag,
+            isAlive: this.isAlive,
+            name: this.name,
+            maxMovesPerRound: this.maxMovesPerRound,
+            basePosition: this.basePosition,
+            viewRange: this.viewRange,
+            movesLeft: this.movesLeft,
+            x: this.x,
+            y: this.y
+        }
     }
 
 
@@ -69,7 +78,7 @@ export default class Player {
         const visibleMap = this.map.calculateVisibleMap(fieldOfView);
         const visiblePlayer = players.filter( p => fieldOfView.isPointVisible( new Point(p.x, p.y) ));
 
-        const playersData: Player[] = visiblePlayer.map(p => p.getPlayerDto());
+        const playersData: PlayerDto[] = visiblePlayer.map(p => p.getPlayerDto());
         const moveRequest: MoveRequest = new MoveRequest(visibleMap, playersData, flag);
 
         this.socket.send(JSON.stringify(moveRequest));
