@@ -10,6 +10,12 @@ describe("GameMap", () => {
 
     describe("Calculate visible map", () => {
 
+        it("Should generate map", () => {
+            const testMap: GameMap = new GameMap(10, 10);
+
+            console.log(testMap.map);
+        });
+
         it("Should return correctly masked map for correct point", () => {
             const testMap: GameMap = new GameMap(5, 5);
             const centerPoint: Point = new Point(2,2);

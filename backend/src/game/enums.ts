@@ -20,3 +20,9 @@ export const enum GameMode {
     DELAY = "DELAY",
     MANUAL = "MANUAL"
 }
+
+export  enum GroundTypes {
+    GRASS = 1,
+    WATER = 2,
+    SWAMP = 3,
+}

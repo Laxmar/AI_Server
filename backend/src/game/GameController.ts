@@ -103,12 +103,10 @@ export class GameController {
         let y = 0;
 
         if(playerNumber == 0) {
-            x = this.gameMap.width / 2;
-            y = 0;
             return new Point(x, y);
         }
         if(playerNumber == 1) {
-            x = this.gameMap.width / 2;
+            x = this.gameMap.width-1;
             y = this.gameMap.height-1;
         }
         return new Point(x,y);

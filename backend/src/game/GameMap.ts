@@ -1,11 +1,13 @@
 import {Point} from "./Point";
 import FieldOfView from "./FieldOfView";
+import {PerlinNoiseGenerator} from "./PerlinNoiseGenerator";
+import {GroundTypes} from "./enums";
 
 export default class GameMap {
     readonly width: number;
     readonly height: number;
 
-    readonly map: number[][] = [];
+    map: number[][] = [];
 
     constructor(width: number, height: number) {
         this.width = width;
@@ -19,7 +21,6 @@ export default class GameMap {
 
     public calculateVisibleMap(fieldOfView: FieldOfView): number[][] {
         let visibleMap: number[][] = Object.assign([], this.map);
-
         const fieldNotVisible: number = -1;
 
         for (let y = 0; y < this.height; y++) {
@@ -33,16 +34,28 @@ export default class GameMap {
         return visibleMap;
     }
 
-    // TODO generateMap with perlin noise alg
     private generateMap() {
+        const perlinNoiseGenerator = new PerlinNoiseGenerator(this.width, this.height);
+        this.map = perlinNoiseGenerator.generatePerlinNoise(5);
+
         for(let i = 0; i<this.height; i++) {
-            this.map.push([]);
             for(let j=0; j<this.width; j++) {
-                this.map[i].push(1);
+                this.map[i][j] = this.convertGroundType(this.map[i][j])
             }
         }
+
     }
 
-
+    private convertGroundType(field: number): number {
+        if (field <= 0.5) {
+            return GroundTypes.GRASS;
+        }
+        if (field > 0.5 && field < 0.75) {
+           return GroundTypes.WATER;
+        }
+        if (field > 0.75) {
+            return GroundTypes.SWAMP;
+        }
+    }
 
 }
