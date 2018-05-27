@@ -3,6 +3,7 @@ export enum ErrorCodes {
     invalidMessageType = "invalidMessageType",
     invalidConnectMessage = "invalidConnectMessage",
     invalidMoveMessage = "invalidMoveMessage",
+    invalidRestartMessage = "invalidRestartMessage",
     gameAlreadyStarted = "gameAlreadyStarted",
     invalidPlayerId = "invalidPlayerId",
     invalidMove = "invalidMove",

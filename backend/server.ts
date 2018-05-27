@@ -2,9 +2,15 @@ import * as WebSocket from "ws";
 
 import {ErrorCodes} from "./src/communication/ErrorCodes";
 import {GameController} from "./src/game/GameController";
-import {ConnectMessage, IncomingMessage, IncomingMessagesTypes, MoveMessage} from "./src/communication/incomingMessages";
+import {
+    ConnectMessage, IncomingMessage, IncomingMessagesTypes, MoveMessage,
+    RestartGameMessage
+} from "./src/communication/incomingMessages";
 import {GameMode, GameStatus} from "./src/game/enums";
-import {isValidConnectMessage, isValidMessage, isValidMoveMessage} from "./src/communication/messagesValidator";
+import {
+    isValidConnectMessage, isValidMessage, isValidMoveMessage,
+    isValidRestartMessage
+} from "./src/communication/messagesValidator";
 import {GameConfiguration} from "./GameConfiguration";
 import {ConnectResponse, ErrorResponse, FrontConnectResponse, ResponseOK} from "./src/communication/serverResponses";
 import {FrontendCommunication} from "./src/FrontendCommunication";
@@ -17,6 +23,7 @@ const server = new WebSocket.Server({port: port} , () => {
 
 const gameController: GameController = new GameController();
 const frontCommunication: FrontendCommunication = new FrontendCommunication();
+const adminToken: number = Math.floor((Math.random() * 1000));
 
 server.on('connection', function connection(ws: WebSocket) {
 
@@ -41,7 +48,8 @@ server.on('connection', function connection(ws: WebSocket) {
 
                 if(frontCommunication.isFrontClient(<ConnectMessage>msg)) {
                     frontCommunication.addClient(ws);
-                    ws.send(JSON.stringify(new FrontConnectResponse(gameController.gameMap.getMapDto())));
+                    const res = new FrontConnectResponse(gameController.gameMap.getMapDto(), adminToken);
+                    ws.send(JSON.stringify(res));
                     return;
                 }
 
@@ -108,6 +116,18 @@ server.on('connection', function connection(ws: WebSocket) {
 
             case IncomingMessagesTypes.NextMove:
                 gameController.nextMove();
+                break;
+
+            case IncomingMessagesTypes.GameRestart:
+
+                if(!isValidRestartMessage(msg)) {
+                    server.emit("gameError", ErrorCodes.invalidRestartMessage, ws);
+                    return;
+                }
+
+                if((<RestartGameMessage>msg).token == adminToken && gameController.players.length > 0) {
+                    gameController.restartGame();
+                }
                 break;
 
             default:

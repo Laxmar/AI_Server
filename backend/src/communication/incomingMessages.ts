@@ -3,7 +3,8 @@ import {MoveDirections} from "../game/enums";
 export enum IncomingMessagesTypes {
     Connect = "Connect",
     Move = "Move",
-    NextMove = "NextMove"
+    NextMove = "NextMove",
+    GameRestart = "GameRestart"
 }
 
 export abstract class IncomingMessage {
@@ -17,5 +18,9 @@ export class ConnectMessage extends IncomingMessage {
 export class MoveMessage extends IncomingMessage {
     move: MoveDirections;
     playerId: number;
+}
+
+export class RestartGameMessage extends IncomingMessage {
+    token: number;
 }
 

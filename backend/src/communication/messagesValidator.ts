@@ -20,3 +20,7 @@ export function isValidConnectMessage(msg: any): boolean {
 export function isValidMoveMessage(msg: any): boolean {
     return msg.type == IncomingMessagesTypes.Move && isNumber(msg.playerId) && MoveDirectionsArray.includes(msg.move);
 }
+
+export function isValidRestartMessage(msg: any): boolean {
+    return msg.type == IncomingMessagesTypes.GameRestart && isNumber(msg.token);
+}

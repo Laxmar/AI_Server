@@ -37,9 +37,11 @@ export class FrontConnectResponse {
     type: ServerResponseTypes = ServerResponseTypes.FrontConnect;
     msg: string = "FrontConnect";
     map: GameMapDto;
+    token: number;
 
-    constructor(map: GameMapDto) {
+    constructor(map: GameMapDto, token: number) {
         this.map = map;
+        this.token = token;
     }
 }
 

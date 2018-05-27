@@ -62,6 +62,7 @@ export default class Player {
         this.x = this.basePosition.x;
         this.y = this.basePosition.y;
         this.isAlive = true;
+        this.movesLeft = this.maxMovesPerRound;
     }
 
 

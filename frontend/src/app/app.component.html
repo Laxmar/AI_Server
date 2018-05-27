@@ -9,6 +9,13 @@
 
 
   <div class="row">
+    <div class="col-12 ">
+      <button (click)="connect()" class="btn btn-success btn-lg" >Connect</button>
+      <button (click)="restart()" class="btn btn-dark btn-lg" >Restart</button>
+    </div>
+  </div>
+
+  <div class="row">
     <div class="col-12">
        <pre class="border">
           {{ map | json }}
@@ -25,11 +32,7 @@
     </div>
   </div>
 
-  <div class="row">
-    <div class="col-12 btn-group">
-      <button (click)="connect()" class="btn btn-success btn-lg" >connect</button>
-    </div>
-  </div>
+
 
 
 </div>

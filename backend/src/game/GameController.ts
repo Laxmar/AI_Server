@@ -18,8 +18,14 @@ export class GameController {
 
     constructor() {
         this.gameMap = new GameMap(GameConfiguration.mapWidth,GameConfiguration.mapHeight);
-        this.flagPosition = this.gameMap.calculateMapCenter();
         this.players = [];
+        this.placeFlag();
+    }
+
+    restartGame() {
+        this.placeFlag();
+        this.players.forEach(p => p.respawn());
+        this.startGame();
     }
 
     addPlayer(name: string, socket: WebSocket): void {
@@ -114,5 +120,9 @@ export class GameController {
             y = this.gameMap.height-1;
         }
         return new Point(x,y);
+    }
+
+    private placeFlag() {
+        this.flagPosition = this.gameMap.calculateMapCenter();
     }
 }

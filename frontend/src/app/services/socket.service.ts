@@ -38,4 +38,10 @@ export class SocketService {
         this.socket.send(JSON.stringify(connectMsg));
     }
 
+    public send(msg: Object) {
+        if(this.socket.readyState) {
+            this.socket.send(JSON.stringify(msg));
+        }
+    }
+
 }

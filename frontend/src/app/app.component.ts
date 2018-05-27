@@ -13,6 +13,7 @@ export class AppComponent implements OnInit {
 
     map: any;
 
+    private token: number;
     private socketService: SocketService;
 
 
@@ -34,7 +35,8 @@ export class AppComponent implements OnInit {
                 this.msg = JSON.parse(message.data);
 
                 if(this.msg.type == "FrontConnect") {
-                    this.map = (this.msg).map;
+                    this.map = this.msg.map;
+                    this.token = this.msg.token;
                     console.log()
                 }
             });
@@ -43,4 +45,13 @@ export class AppComponent implements OnInit {
     connect() {
         this.socketService.connect();
     }
+
+    restart() {
+        const restartMsg = {
+            type: "GameRestart",
+            token: this.token
+        }
+        this.socketService.send(restartMsg);
+    }
+
 }
