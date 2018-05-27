@@ -105,10 +105,10 @@ export default class Player {
 
         switch (direction) {
             case MoveDirections.DOWN:
-                position.y -= 1;
+                position.y += 1;
                 break;
             case MoveDirections.UP:
-                position.y += 1;
+                position.y -= 1;
                 break;
 
             case MoveDirections.RIGHT:
