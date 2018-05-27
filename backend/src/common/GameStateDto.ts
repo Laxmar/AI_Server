@@ -5,5 +5,4 @@ import {GameMapDto} from "./GameMapDto";
 
 export interface GameStateDto {
     players: PlayerDto[];
-    map: GameMapDto;
 }

@@ -5,6 +5,7 @@ import {Point} from "./Point";
 import {MoveRequest} from "../communication/serverRequests";
 import FieldOfView from "./FieldOfView";
 import {PlayerDto} from "../common/PlayerDto";
+import {GameMapDto} from "../common/GameMapDto";
 
 export default class Player {
     public readonly id: number;
@@ -20,7 +21,6 @@ export default class Player {
     private x: number;
     private y: number;
 
-    // These fields aren't sent to client
     private socket: WebSocket;
     private map: GameMap;
 
@@ -79,7 +79,12 @@ export default class Player {
         const visiblePlayer = players.filter( p => fieldOfView.isPointVisible( new Point(p.x, p.y) ));
 
         const playersData: PlayerDto[] = visiblePlayer.map(p => p.getPlayerDto());
-        const moveRequest: MoveRequest = new MoveRequest(visibleMap, playersData, flag);
+        const gameMapDto: GameMapDto = {
+            width: this.map.width,
+            height: this.map.height,
+            fields: visibleMap
+        };
+        const moveRequest: MoveRequest = new MoveRequest(gameMapDto, playersData, flag);
 
         this.socket.send(JSON.stringify(moveRequest));
     }

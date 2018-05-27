@@ -1,10 +1,12 @@
 import {IncomingMessage} from "./incomingMessages";
 import {ErrorCodes} from "./ErrorCodes";
+import {GameMapDto} from "../common/GameMapDto";
 
 export enum ServerResponseTypes  {
     ResponseOK = "ResponseOK",
     Error = "Error",
-    Connected = "Connected"
+    Connected = "Connected",
+    FrontConnect = "FrontConnect"
 }
 
 export class ResponseOK {
@@ -31,4 +33,13 @@ export class ConnectResponse {
     }
 }
 
+export class FrontConnectResponse {
+    type: ServerResponseTypes = ServerResponseTypes.FrontConnect;
+    msg: string = "FrontConnect";
+    map: GameMapDto;
+
+    constructor(map: GameMapDto) {
+        this.map = map;
+    }
+}
 

@@ -8,15 +8,17 @@ import FieldOfView from "../../src/game/FieldOfView";
 
 describe("GameMap", () => {
 
-    describe("Calculate visible map", () => {
 
-        it("Should generate map", () => {
-            const testMap: GameMap = new GameMap(10, 10);
+    it("Should generate map", () => {
+        const testMap: GameMap = new GameMap(10, 10);
 
-            console.log(testMap.map);
-        });
+        console.log(testMap.fields);
+    });
 
-        it("Should return correctly masked map for correct point", () => {
+    describe("Calculate visible fields", () => {
+
+
+        it("Should return correctly masked fields for correct point", () => {
             const testMap: GameMap = new GameMap(5, 5);
             const centerPoint: Point = new Point(2,2);
             const viewRange: number = 1;
@@ -36,7 +38,7 @@ describe("GameMap", () => {
 
         });
 
-        it("Should return fully masked map for point out of the map", () => {
+        it("Should return fully masked fields for point out of the fields", () => {
             const testMap: GameMap = new GameMap(2, 2);
             const centerPoint: Point = new Point(10,10);
             const viewRange: number = 1;

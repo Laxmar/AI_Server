@@ -5,6 +5,7 @@ import {GameMapDto} from "./common/GameMapDto";
 import {GameStatus} from "./game/enums";
 import {GameStateDto} from "./common/GameStateDto";
 import Player from "./game/Player";
+import GameMap from "./game/GameMap";
 
 export class FrontendCommunication {
 
@@ -32,13 +33,12 @@ export class FrontendCommunication {
         })
     }
 
-    public sendGameState(players: Player[], gameMap: GameMapDto) {
+    public sendGameState(players: Player[]) {
 
         let playersDto: PlayerDto[] = players.map( p => p.getPlayerDto());
 
         let gameState: GameStateDto = {
             players: playersDto,
-            map: gameMap
         };
 
         this.send(JSON.stringify(gameState));
