@@ -26,9 +26,8 @@ export default class GameMap {
         }
     }
 
-
     public calculateMapCenter(): Point {
-        return new Point(this.width/2, this.height/2);
+        return new Point(Math.floor(this.width/2), Math.floor(this.height/2));
     }
 
     public calculateVisibleMap(fieldOfView: FieldOfView): number[][] {

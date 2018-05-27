@@ -1,8 +1,5 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {SocketService} from "./services/socket.service";
-import {FrontConnectResponse, ServerResponseTypes} from "../../../backend/src/communication/serverResponses";
-import GameMap from "../../../backend/src/game/GameMap";
-import {GameMapDto} from "../../../backend/src/common/GameMapDto";
 
 @Component({
     selector: 'app-root',
@@ -14,7 +11,7 @@ export class AppComponent implements OnInit {
 
     msg: any;
 
-    map: GameMapDto;
+    map: any;
 
     private socketService: SocketService;
 
@@ -36,8 +33,8 @@ export class AppComponent implements OnInit {
                 console.log("msg");
                 this.msg = JSON.parse(message.data);
 
-                if(this.msg.type == ServerResponseTypes.FrontConnect) {
-                    this.map = (<FrontConnectResponse>this.msg).map;
+                if(this.msg.type == "FrontConnect") {
+                    this.map = (this.msg).map;
                     console.log()
                 }
             });
