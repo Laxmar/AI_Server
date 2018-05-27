@@ -64,7 +64,9 @@ export class GameController {
             this.flagPosition = nextPosition;
         }
 
-        const deadPlayers: Player[] = this.players.filter( p => p.getPosition().equals( this.currentPlayer.getPosition()));
+        const deadPlayers: Player[] = this.players.filter( p => {
+            return p.getPosition().equals( this.currentPlayer.getPosition()) && this.currentPlayer.id != p.id;
+        });
         deadPlayers.forEach( p => p.isAlive = false);
 
         if(this.isGameOver()) {
