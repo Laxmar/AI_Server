@@ -31,7 +31,7 @@ export default class GameMap {
     }
 
     public calculateVisibleMap(fieldOfView: FieldOfView): number[][] {
-        let visibleMap: number[][] = Object.assign([], this.fields);
+        let visibleFields: number[][] = JSON.parse(JSON.stringify(this.fields));
         const fieldNotVisible: number = -1;
 
         for (let y = 0; y < this.height; y++) {
@@ -39,10 +39,10 @@ export default class GameMap {
                 if (fieldOfView.isPointVisible( new Point(x,y) )) {
                     continue;
                 }
-                visibleMap[y][x] = fieldNotVisible;
+                visibleFields[y][x] = fieldNotVisible;
             }
         }
-        return visibleMap;
+        return visibleFields;
     }
 
     private generateMap() {
