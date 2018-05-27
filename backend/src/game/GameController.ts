@@ -56,7 +56,7 @@ export class GameController {
 
         this.currentPlayer.move(nextPosition, moveCost);
 
-        if(nextPosition === this.flagPosition) {
+        if(nextPosition.equals(this.flagPosition)) {
             this.currentPlayer.hasFlag = true;
         }
 
