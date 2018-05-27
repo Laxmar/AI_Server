@@ -54,6 +54,16 @@ export default class Player {
         }
     }
 
+    getPosition(): Point {
+        return new Point(this.x, this.y);
+    }
+
+    respawn() {
+        this.x = this.basePosition.x;
+        this.y = this.basePosition.y;
+        this.isAlive = true;
+    }
+
 
     getMovesLeft(): number {
         return this.movesLeft;

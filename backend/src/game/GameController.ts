@@ -58,10 +58,10 @@ export class GameController {
             this.flagPosition = nextPosition;
         }
 
-        // TODO check if player kill player
+        const deadPlayers: Player[] = this.players.filter( p => p.getPosition().equals( this.currentPlayer.getPosition()));
+        deadPlayers.forEach( p => p.isAlive = false);
 
-        // TODO add testing mode - maxPlayers = 1; makes sense just for testing purpose
-        if(this.isGameOver() && GameConfiguration.maxPlayers > 1) {
+        if(this.isGameOver()) {
             this.status = GameStatus.FINISHED;
         }
     }
@@ -78,6 +78,11 @@ export class GameController {
         const nextIndex = this.players.length == 1 ? 0 : (this.currentPlayer.id + 1) % this.players.length;
         this.currentPlayer = this.players[nextIndex];
         this.currentPlayer.resetMovePoints();
+
+        if(!this.currentPlayer.isAlive) {
+            this.currentPlayer.respawn();
+        }
+
         this.nextMove();
     }
 
@@ -93,8 +98,7 @@ export class GameController {
     }
 
     private isGameOver(): boolean {
-        const isOnePlayerAlive = this.players.filter( p => p.isAlive).length == 1;
-        return (this.currentPlayer.isPlayerInBase() && this.currentPlayer.hasFlag) || isOnePlayerAlive;
+        return (this.currentPlayer.isPlayerInBase() && this.currentPlayer.hasFlag);
     }
 
     // TODO handle more players
