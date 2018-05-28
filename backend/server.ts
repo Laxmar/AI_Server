@@ -13,7 +13,7 @@ import {
 } from "./src/communication/messagesValidator";
 import {GameConfiguration} from "./GameConfiguration";
 import {
-    ConnectResponse, ErrorResponse, FrontConnectResponse, GameOver, GameOverResponse,
+    ConnectResponse, ErrorResponse, FrontConnectResponse, GameOverResponse,
     ResponseOK
 } from "./src/communication/serverResponses";
 import {FrontendCommunication} from "./src/FrontendCommunication";
@@ -152,7 +152,7 @@ server.on("gameOver", () => {
     server.clients.forEach(function each(client) {
         if (client.readyState === WebSocket.OPEN) {
             const winner = gameController.currentPlayer.getPlayerDto();
-            client.send(JSON.stringify(new GameOverResponse(winner));
+            client.send(JSON.stringify(new GameOverResponse(winner)));
         }
     });
 });
