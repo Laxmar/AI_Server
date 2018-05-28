@@ -12,7 +12,10 @@ import {
     isValidRestartMessage
 } from "./src/communication/messagesValidator";
 import {GameConfiguration} from "./GameConfiguration";
-import {ConnectResponse, ErrorResponse, FrontConnectResponse, ResponseOK} from "./src/communication/serverResponses";
+import {
+    ConnectResponse, ErrorResponse, FrontConnectResponse, GameOver, GameOverResponse,
+    ResponseOK
+} from "./src/communication/serverResponses";
 import {FrontendCommunication} from "./src/FrontendCommunication";
 
 const port: number = 8000;
@@ -86,19 +89,12 @@ server.on('connection', function connection(ws: WebSocket) {
                 }
 
                 gameController.moveCurrentPlayer(moveMsg.move);
-
-                console.log("Player moved");
-
                 frontCommunication.sendGameState(gameController.players);
 
                 ws.send(JSON.stringify(new ResponseOK()));
 
                 if(gameController.status == GameStatus.FINISHED ) {
-                    server.clients.forEach(function each(client) {
-                        if (client.readyState === WebSocket.OPEN) {
-                            client.send(JSON.stringify({type: "GameOver"}));
-                        }
-                    });
+                    server.emit("gameOver");
                     return;
                 }
 
@@ -150,6 +146,15 @@ server.on("gameError",(errorCode, ws) => {
     console.log(errorCode);
     ws.send(JSON.stringify(new ErrorResponse(errorCode)));
 
+});
+
+server.on("gameOver", () => {
+    server.clients.forEach(function each(client) {
+        if (client.readyState === WebSocket.OPEN) {
+            const winner = gameController.currentPlayer.getPlayerDto();
+            client.send(JSON.stringify(new GameOverResponse(winner));
+        }
+    });
 });
 
 server.on("error", (err) => {

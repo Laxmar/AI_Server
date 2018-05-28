@@ -12,15 +12,18 @@ export abstract class IncomingMessage {
 }
 
 export class ConnectMessage extends IncomingMessage {
+    type: IncomingMessagesTypes = IncomingMessagesTypes.Connect;
     name: string;
 }
 
 export class MoveMessage extends IncomingMessage {
+    type: IncomingMessagesTypes = IncomingMessagesTypes.Move;
     move: MoveDirections;
     playerId: number;
 }
 
 export class RestartGameMessage extends IncomingMessage {
+    type: IncomingMessagesTypes = IncomingMessagesTypes.GameRestart;
     token: number;
 }
 

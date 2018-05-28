@@ -1,12 +1,14 @@
 import {IncomingMessage} from "./incomingMessages";
 import {ErrorCodes} from "./ErrorCodes";
 import {GameMapDto} from "../common/GameMapDto";
+import {PlayerDto} from "../common/PlayerDto";
 
 export enum ServerResponseTypes  {
     ResponseOK = "ResponseOK",
     Error = "Error",
     Connected = "Connected",
-    FrontConnect = "FrontConnect"
+    FrontConnect = "FrontConnect",
+    GameOver = "GameOver"
 }
 
 export class ResponseOK {
@@ -42,6 +44,15 @@ export class FrontConnectResponse {
     constructor(map: GameMapDto, token: number) {
         this.map = map;
         this.token = token;
+    }
+}
+
+export class GameOverResponse {
+    type: ServerResponseTypes = ServerResponseTypes.GameOver;
+    winner: PlayerDto;
+
+    constructor(winner: PlayerDto) {
+        this.winner = winner;
     }
 }
 
