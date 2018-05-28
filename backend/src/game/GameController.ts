@@ -67,7 +67,7 @@ export class GameController {
         const deadPlayers: Player[] = this.players.filter( p => {
             return p.getPosition().equals( this.currentPlayer.getPosition()) && this.currentPlayer.id != p.id;
         });
-        deadPlayers.forEach( p => p.isAlive = false);
+        deadPlayers.forEach( p => p.kill());
 
         if(this.isGameOver()) {
             this.status = GameStatus.FINISHED;

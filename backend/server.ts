@@ -97,9 +97,9 @@ server.on('connection', function connection(ws: WebSocket) {
                     server.clients.forEach(function each(client) {
                         if (client.readyState === WebSocket.OPEN) {
                             client.send(JSON.stringify({type: "GameOver"}));
-                            return;
                         }
-                    })
+                    });
+                    return;
                 }
 
                 if(GameConfiguration.gameMode == GameMode.MANUAL) {
@@ -153,5 +153,5 @@ server.on("gameError",(errorCode, ws) => {
 });
 
 server.on("error", (err) => {
-console.log(err);
+    console.log(err);
 });

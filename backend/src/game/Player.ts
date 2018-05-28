@@ -62,7 +62,6 @@ export default class Player {
         this.x = this.basePosition.x;
         this.y = this.basePosition.y;
         this.isAlive = true;
-        this.movesLeft = this.maxMovesPerRound;
     }
 
 
@@ -133,5 +132,10 @@ export default class Player {
         this.x = nextPosition.x;
         this.y = nextPosition.y;
         this.movesLeft -= moveCost;
+    }
+
+    kill() {
+        this.isAlive = false;
+        this.hasFlag = false;
     }
 }
