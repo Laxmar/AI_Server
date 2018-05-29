@@ -6,6 +6,8 @@ import {GameStatus} from "./game/enums";
 import {GameStateDto} from "./common/GameStateDto";
 import Player from "./game/Player";
 import GameMap from "./game/GameMap";
+import {Point} from "./game/Point";
+import {GameStateUpdateMessage} from "./communication/frontMessages";
 
 export class FrontendCommunication {
 
@@ -33,14 +35,17 @@ export class FrontendCommunication {
         })
     }
 
-    public sendGameState(players: Player[]) {
+    public sendGameState(players: Player[], flagPos: Point) {
 
         let playersDto: PlayerDto[] = players.map( p => p.getPlayerDto());
 
         let gameState: GameStateDto = {
             players: playersDto,
+            flag: flagPos
         };
 
-        this.send(JSON.stringify(gameState));
+        const msg: GameStateUpdateMessage = new GameStateUpdateMessage(gameState);
+
+        this.send(JSON.stringify(msg));
     }
 }

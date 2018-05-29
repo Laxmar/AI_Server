@@ -7,6 +7,6 @@ export class GameConfiguration {
     static readonly carryingFlagMoveCost = 0.5;
     static readonly gameMode: GameMode = GameMode.DELAY;
     static readonly delay: number = 500;                // [ms]
-    static readonly mapWidth = 5;
-    static readonly mapHeight = 5;
+    static readonly mapWidth = 10;
+    static readonly mapHeight = 10;
 }

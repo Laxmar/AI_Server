@@ -89,7 +89,7 @@ server.on('connection', function connection(ws: WebSocket) {
                 }
 
                 gameController.moveCurrentPlayer(moveMsg.move);
-                frontCommunication.sendGameState(gameController.players);
+                frontCommunication.sendGameState(gameController.players, gameController.flagPosition);
 
                 ws.send(JSON.stringify(new ResponseOK()));
 
