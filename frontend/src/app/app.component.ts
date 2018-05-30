@@ -49,8 +49,8 @@ export class AppComponent implements OnInit {
                 if(this.msg.type == "GameStateUpdate") {
                     let gameState = this.msg.gameState;
                     this.drawMap(this.map.width, this.sideLength, this.map.fields);
-                    this.drawFlag(gameState.flag.x, gameState.flag.y, this.sideLength);
                     gameState.players.forEach( p => this.drawPlayer(p.x, p.y, this.sideLength, p.id));
+                    this.drawFlag(gameState.flag.x, gameState.flag.y, this.sideLength);
                 }
             });
     }
@@ -62,7 +62,7 @@ export class AppComponent implements OnInit {
 
         for(let y=0; y<width; y++) {
             for(let x=0; x<width; x++) {
-                switch (fields[x][y]) {
+                switch (fields[y][x]) {
                     case 1:
                         this.canvasContext.fillStyle = '#52dd32';
                         break;
