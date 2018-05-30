@@ -101,7 +101,7 @@ export class GameController {
     }
 
     private calculateMoveCost(position: Point, hasFlag: boolean): number {
-        let moveCost: number = this.gameMap.fields[position.x][position.y];
+        let moveCost: number = this.gameMap.fields[position.y][position.x];
         return hasFlag ? moveCost + GameConfiguration.carryingFlagMoveCost : moveCost;
     }
 
