@@ -47,7 +47,7 @@ export default class GameMap {
 
     private generateMap() {
         const perlinNoiseGenerator = new PerlinNoiseGenerator(this.width, this.height);
-        this.fields = perlinNoiseGenerator.generatePerlinNoise(5);
+        this.fields = perlinNoiseGenerator.generatePerlinNoise(2);
 
         for(let i = 0; i<this.height; i++) {
             for(let j=0; j<this.width; j++) {
