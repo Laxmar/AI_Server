@@ -6,7 +6,7 @@ import {
     ConnectMessage, IncomingMessage, IncomingMessagesTypes, MoveMessage,
     RestartGameMessage
 } from "./src/communication/incomingMessages";
-import {GameMode, GameStatus} from "./src/game/enums";
+import {GameMode, GameStatus, MoveDirections} from "./src/game/enums";
 import {
     isValidConnectMessage, isValidMessage, isValidMoveMessage,
     isValidRestartMessage
@@ -81,6 +81,13 @@ server.on('connection', function connection(ws: WebSocket) {
                     server.emit("gameError", ErrorCodes.invalidPlayerId, ws);
                     return
                 }
+                if(moveMsg.move == MoveDirections.NO_MOVE) {
+                    ws.send(JSON.stringify(new ResponseOK()));
+                    gameController.currentPlayer.setToMovesLeftToZero();
+                    gameController.nextMove();
+                    return;
+                }
+
                 if (!gameController.isValidMoveForCurrentPlayer(moveMsg.move)) {
                     server.emit("gameError", ErrorCodes.invalidMove, ws);
                     gameController.currentPlayer.setToMovesLeftToZero();
