@@ -23,6 +23,7 @@ export class GameController {
     }
 
     restartGame() {
+        this.gameMap = new GameMap(GameConfiguration.mapWidth,GameConfiguration.mapHeight);
         this.placeFlag();
         this.players.forEach(p => p.spawn());
         this.startGame();

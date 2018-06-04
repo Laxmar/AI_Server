@@ -90,9 +90,9 @@ export class AppComponent implements OnInit {
 
     private drawPlayer(x: number, y:number, sideLength: number, playerNumber: number) {
         if(playerNumber == 0) {
-            this.canvasContext.fillStyle = '#dceb0c';
+            this.canvasContext.fillStyle = '#000000';
         } else {
-            this.canvasContext.fillStyle = '#ebe9e4';
+            this.canvasContext.fillStyle = '#ffffff';
         }
 
         this.canvasContext.beginPath();

@@ -130,6 +130,8 @@ server.on('connection', function connection(ws: WebSocket) {
 
                 if((<RestartGameMessage>msg).token == adminToken && gameController.players.length > 0) {
                     gameController.restartGame();
+                    const res = new FrontConnectResponse(gameController.gameMap.getMapDto(), adminToken);
+                    ws.send(JSON.stringify(res));
                 }
                 break;
 
