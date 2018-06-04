@@ -24,7 +24,7 @@ export class GameController {
 
     restartGame() {
         this.placeFlag();
-        this.players.forEach(p => p.respawn());
+        this.players.forEach(p => p.spawn());
         this.startGame();
     }
 
@@ -88,7 +88,7 @@ export class GameController {
         this.currentPlayer.resetMovePoints();
 
         if(!this.currentPlayer.isAlive) {
-            this.currentPlayer.respawn();
+            this.currentPlayer.spawn();
         }
 
         this.nextMove();

@@ -28,15 +28,11 @@ export default class Player {
         this.id = id;
         this.name = name;
         this.socket = socket;
-        this.movesLeft = maxMovesPerRound;
         this.maxMovesPerRound = maxMovesPerRound;
         this.viewRange = viewRange;
-        this.x = startingPosition.x;
-        this.y = startingPosition.y;
-        this.basePosition = new Point(this.x, this.y);
-        this.hasFlag = false;
-        this.isAlive = true;
+        this.basePosition = new Point(startingPosition.x, startingPosition.y);
         this.map = map;
+        this.spawn();
     }
 
     getPlayerDto(): PlayerDto {
@@ -58,10 +54,12 @@ export default class Player {
         return new Point(this.x, this.y);
     }
 
-    respawn() {
+    spawn() {
         this.x = this.basePosition.x;
         this.y = this.basePosition.y;
         this.isAlive = true;
+        this.hasFlag = false;
+        this.movesLeft = this.maxMovesPerRound;
     }
 
 
@@ -125,10 +123,6 @@ export default class Player {
     }
 
     move(nextPosition: Point , moveCost: number) {
-        if(this.x == nextPosition.x && this.y == nextPosition.y) {
-            this.movesLeft = 0;
-            return;
-        }
         this.x = nextPosition.x;
         this.y = nextPosition.y;
         this.movesLeft -= moveCost;

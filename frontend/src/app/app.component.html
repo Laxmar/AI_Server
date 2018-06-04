@@ -15,9 +15,15 @@
     </div>
   </div>
 
+  <div class="row" *ngIf="isGameOver">
+    <div class="col-12 alert alert-success">
+      Game Over! Winner is {{winnerName}}!
+    </div>
+  </div>
+
   <div class="p-1">
     <div class="col-12">
-      <canvas #map id="map" width="500" height="500"></canvas>
+      <canvas #map id="map" width="750" height="750"></canvas>
     </div>
   </div>
 
@@ -31,13 +37,5 @@
   </div>
 
 
-
-
 </div>
-
-
-
-<!--<canvas #myCanvas width="500" height="500"></canvas>-->
-
-
 

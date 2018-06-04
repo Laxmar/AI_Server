@@ -10,9 +10,12 @@ import {SocketService} from "./services/socket.service";
 export class AppComponent implements OnInit {
 
     msg: any;
-
     map: any;
-    private mapSideInPixel: number = 500;
+
+    isGameOver: boolean;
+    winnerName: string;
+
+    private mapSideInPixel: number = 750;
     private sideLength: number;
 
 
@@ -52,6 +55,12 @@ export class AppComponent implements OnInit {
                     gameState.players.forEach( p => this.drawPlayer(p.x, p.y, this.sideLength, p.id));
                     this.drawFlag(gameState.flag.x, gameState.flag.y, this.sideLength);
                 }
+
+                if(this.msg.type == "GameOver") {
+                    let winner = this.msg.winner;
+                    this.winnerName = winner.name;
+                    this.isGameOver = true;
+                }
             });
     }
 
@@ -83,7 +92,7 @@ export class AppComponent implements OnInit {
         if(playerNumber == 0) {
             this.canvasContext.fillStyle = '#dceb0c';
         } else {
-            this.canvasContext.fillStyle = '#eb6e14';
+            this.canvasContext.fillStyle = '#ebe9e4';
         }
 
         this.canvasContext.beginPath();
@@ -131,6 +140,7 @@ export class AppComponent implements OnInit {
     }
 
     restart() {
+        this.isGameOver = false;
         const restartMsg = {
             type: "GameRestart",
             token: this.token
