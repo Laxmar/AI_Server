@@ -31,8 +31,7 @@ export default class Player {
         this.maxMovesPerRound = maxMovesPerRound;
         this.viewRange = viewRange;
         this.basePosition = new Point(startingPosition.x, startingPosition.y);
-        this.map = map;
-        this.spawn();
+        this.spawn(map);
     }
 
     getPlayerDto(): PlayerDto {
@@ -54,12 +53,13 @@ export default class Player {
         return new Point(this.x, this.y);
     }
 
-    spawn() {
+    spawn(map: GameMap) {
         this.x = this.basePosition.x;
         this.y = this.basePosition.y;
         this.isAlive = true;
         this.hasFlag = false;
         this.movesLeft = this.maxMovesPerRound;
+        this.map = map;
     }
 
 

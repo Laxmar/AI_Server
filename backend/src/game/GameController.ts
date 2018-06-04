@@ -25,7 +25,7 @@ export class GameController {
     restartGame() {
         this.gameMap = new GameMap(GameConfiguration.mapWidth,GameConfiguration.mapHeight);
         this.placeFlag();
-        this.players.forEach(p => p.spawn());
+        this.players.forEach(p => p.spawn(this.gameMap));
         this.startGame();
     }
 
@@ -89,7 +89,7 @@ export class GameController {
         this.currentPlayer.resetMovePoints();
 
         if(!this.currentPlayer.isAlive) {
-            this.currentPlayer.spawn();
+            this.currentPlayer.spawn(this.gameMap);
         }
 
         this.nextMove();

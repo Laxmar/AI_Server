@@ -6,7 +6,7 @@ export class GameConfiguration {
     static readonly maxPlayers = 2;                     // Game starts when all players connected
     static readonly carryingFlagMoveCost = 1.5;
     static readonly gameMode: GameMode = GameMode.DELAY;
-    static readonly delay: number = 500;                // [ms]
+    static readonly delay: number = 100;                // [ms]
     static readonly mapWidth = 75;
     static readonly mapHeight = 75;                     // should equal mapWidth ( at least for now)
 }
