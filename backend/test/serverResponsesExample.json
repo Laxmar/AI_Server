@@ -1,41 +1,47 @@
 
 {
   "type":"MoveRequest",
-  "map":[
-    [
-      1,
-      1,
-      1,
-      1
-    ],
-    [ 1,
-      1,
-      1,
-      1
+  "map": {
+    "width": 75,
+    "height": 75,
+    "fields": [
+      [
+        1,
+        1,
+        3,
+        ...,
+        1
+      ],
+      [
+        2,
+        2,
+        1,
+        ...,
+        3
+      ],
+      ...
     ]
-  ],
-  "players":[
-    {
-      "id":0,
-      "name":"Player One",
-      "maxMovesPerRound:": 5,
-      "movesLeft":5,
-      "viewRange":5,
-      "x":0,
-      "y":0,
-      "basePosition":{
-        "x":0,
-        "y":0
-      },
-      "hasFlag":false,
-      "isAlive":true
-    }
-  ],
-  "flag":{
-    "x":50,
-    "y":50
-  }
-},
+  },
+  "players":
+    [
+      {
+        "id": 1,
+        "hasFlag": false,
+        "isAlive": true,
+        "name": "Player One",
+        "maxMovesPerRound": 7,
+        "basePosition": {
+          "x": 0,
+          "y": 0
+        },
+        "viewRange": 5,
+        "movesLeft": 4,
+        "x": 73,
+        "y": 72
+      }
+    ]
+}
+;
 
 {
   "type" : "ResponseOK",
