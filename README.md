@@ -42,4 +42,4 @@ In case of error server sends ErrorMessage defined in serverResponses.ts.
 
 **Configuration**
 
-Game configuration can be found in backend/GameConfiguration.ts. When bot carries flag carryingFlagMoveCost is added to move cost.  (default  1.5)
+Game configuration can be found in backend/GameConfiguration.ts. When bot carries flag carryingFlagMoveCost is added to move cost.  (default  1.5). After the changes in in GameConfiguration.ts `docker-compose up --build` is required.
