@@ -26,7 +26,7 @@ Backend listens on ws://localhost:8000
 
 Frontend runs on http://localhost:4200
 
-
+Game starts when all players are connected.
 
 
 **Communication**
@@ -39,3 +39,7 @@ Client should save this id, because it's used to create MoveMessage.
 2. Respond for MoveRequest using MoveMessage.
 
 In case of error server sends ErrorMessage defined in serverResponses.ts.
+
+**Configuration**
+
+Game configuration can be found in backend/GameConfiguration.ts. When bot carries flag carryingFlagMoveCost is added to move cost.  (default  1.5)
